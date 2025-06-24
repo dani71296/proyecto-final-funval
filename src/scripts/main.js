@@ -72,3 +72,32 @@ document.addEventListener("click", function (e) {
     document.getElementById("sugerencias").classList.add("hidden");
   }
 });
+
+let capturaGuest= document.getElementById("guests-input");
+let capturaGuestMobile = document.getElementById("guest-panel-mobile")
+let capturaPanel= document.getElementById("guest-panel");
+let overlay= document.getElementById("overlay");
+let cerrarGuestMobil= document.getElementById("close-mobile-panel");
+
+
+capturaGuest.addEventListener("click",()=>{
+    if(window.innerWidth<768){
+        capturaGuestMobile.classList.remove("hidden");
+    }
+    else{
+        capturaPanel.classList.remove("hidden")
+
+    }
+    overlay.classList.remove("hidden");
+    
+});
+cerrarGuestMobil.addEventListener("click",()=>{
+    capturaGuestMobile.classList.add("hidden");
+    overlay.classList.add("hidden")
+});
+overlay.addEventListener("click", () => {
+  capturaPanel.classList.add("hidden");
+  capturaGuestMobile.classList.add("hidden");
+  overlay.classList.add("hidden");
+});
+
