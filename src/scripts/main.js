@@ -10,6 +10,7 @@ let ciudad=document.getElementById("location-input");
 let camas= document.getElementById("guests-input");
 let buscar= document.getElementById("search-btn");
 
+
 function renderizarEstancias(israel){
     contenedor.innerHTML="";
     israel.forEach((dani)=> {
@@ -37,6 +38,7 @@ renderizarEstancias(stays);
 let ciudades= stays.map(estadia=>estadia.city);
 let eliminarDuplicados= new Set(ciudades);
 let arrayDuplicados= Array.from(eliminarDuplicados); 
+
 /* console.log(arrayDuplicados); */
 /* escuchar evento de input add location */
 let escuchada = document.getElementById("location-input");
@@ -72,23 +74,45 @@ document.addEventListener("click", function (e) {
     document.getElementById("sugerencias").classList.add("hidden");
   }
 });
-
+/* guests */
 let capturaGuest= document.getElementById("guests-input");
 let capturaGuestMobile = document.getElementById("guest-panel-mobile")
 let capturaPanel= document.getElementById("guest-panel");
 let overlay= document.getElementById("overlay");
 let cerrarGuestMobil= document.getElementById("close-mobile-panel");
+let inputModal = document.getElementById("modal-location-input")
+let inputModalMobil = document.getElementById("modal-mobil-input")
+/* escritorio */
+const countAdult = document.getElementById("count-adult");
+const btnAdultMas = document.getElementById("increase-adult");
+const btnAdultMenos = document.getElementById("decrease-adult");
 
+const countChildren = document.getElementById("count-children");
+const btnChildrenMas = document.getElementById("increase-children");
+const btnChildrenMenos = document.getElementById("decrease-children");
+// Mobile
+const countAdultMobile = document.getElementById("count-adult-mobile");
+const btnAdultMasMobile = document.getElementById("increase-adult-mobile");
+const btnAdultMenosMobile = document.getElementById("decrease-adult-mobile");
+
+const countChildrenMobile = document.getElementById("count-children-mobile");
+const btnChildrenMasMobile = document.getElementById("increase-children-mobile");
+const btnChildrenMenosMobile = document.getElementById("decrease-children-mobile");
 
 capturaGuest.addEventListener("click",()=>{
     if(window.innerWidth<768){
         capturaGuestMobile.classList.remove("hidden");
+        inputModal.value = escuchada.value
+        
     }
     else{
         capturaPanel.classList.remove("hidden")
+        
 
     }
     overlay.classList.remove("hidden");
+    inputModal.value = escuchada.value;
+    inputModalMobil.value= escuchada.value;
     
 });
 cerrarGuestMobil.addEventListener("click",()=>{
@@ -101,3 +125,56 @@ overlay.addEventListener("click", () => {
   overlay.classList.add("hidden");
 });
 
+/* contadores de mas y menos */
+let adults = 0;
+let children = 0;
+
+function actualizarResumen() {
+  const total = adults + children;
+  capturaGuest.value = total > 0 ? `${total} guests` : "Add guests";
+}
+/* para escritorio */
+btnAdultMas.addEventListener("click", () => {
+  adults++;
+  countAdult.textContent = adults;
+  actualizarResumen();
+});
+
+btnAdultMenos.addEventListener("click", () => {
+  if (adults > 0) adults--;
+  countAdult.textContent = adults;
+  actualizarResumen();
+});
+
+btnChildrenMas.addEventListener("click", () => {
+  children++;
+  countChildren.textContent = children;
+  actualizarResumen();
+});
+
+btnChildrenMenos.addEventListener("click", () => {
+  if (children > 0) children--;
+  countChildren.textContent = children;
+  actualizarResumen();
+});
+// Móvil
+btnAdultMasMobile?.addEventListener("click", () => {
+  adults++;
+  countAdultMobile.textContent=adults
+  actualizarResumen();
+});
+btnAdultMenosMobile?.addEventListener("click", () => {
+  if (adults > 0) adults--;
+  countAdultMobile.textContent=adults
+  actualizarResumen();
+});
+btnChildrenMasMobile?.addEventListener("click", () => {
+  children++;
+  countChildrenMobile.textContent=children
+  actualizarResumen();
+});
+btnChildrenMenosMobile?.addEventListener("click", () => {
+  if (children > 0) children--;
+  countChildrenMobile.textContent=children
+  actualizarResumen();
+});
