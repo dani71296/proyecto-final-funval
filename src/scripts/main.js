@@ -6,11 +6,6 @@
 import { stays } from "./stays.js";
 /* console.log(stays); */
 let contenedor=document.getElementById("cards-container");
-let ciudad=document.getElementById("location-input");
-let camas= document.getElementById("guests-input");
-let buscar= document.getElementById("search-btn");
-
-
 function renderizarEstancias(israel){
     contenedor.innerHTML="";
     israel.forEach((dani)=> {
@@ -177,4 +172,43 @@ btnChildrenMenosMobile?.addEventListener("click", () => {
   if (children > 0) children--;
   countChildrenMobile.textContent=children
   actualizarResumen();
+});
+
+/* codigo para filtrar las cards */
+/* agrupar los 3 botones */
+let searchButtons = [
+  document.getElementById("search-btn-main"),
+  document.getElementById("search-btn-desktop"),
+  document.getElementById("search-btn-mobile")
+];
+// 👉 Función para obtener la ubicación dependiendo del panel activo
+function obtenerUbicacion() {
+  if (!document.getElementById("guest-panel").classList.contains("hidden")) {
+    return document.getElementById("modal-location-input").value.trim().toLowerCase();
+  } else if (!document.getElementById("guest-panel-mobile").classList.contains("hidden")) {
+    return document.getElementById("modal-mobil-input").value.trim().toLowerCase();
+  } else {
+    return document.getElementById("location-input").value.trim().toLowerCase();
+  }
+}
+/* escuchar los clicks */
+
+searchButtons.forEach(btn => {
+  if (btn){
+    btn.addEventListener("click",() => {
+      let location = obtenerUbicacion();/* guardamos en la variable location el resultado de la funcion para obtener la ubicacion */
+      const guests = parseInt(document.getElementById("guests-input").value) || 0;
+      const resultados = stays.filter(estadia => {
+        const ciudad = estadia.city.toLowerCase();
+        return ciudad.includes(location) && estadia.maxGuests >= guests;
+    })
+    
+    /* console.log(resultados); */
+    renderizarEstancias(resultados);/* se envia a la funcion de las card previamente echa */
+
+    document.getElementById("guest-panel")?.classList.add("hidden");
+    document.getElementById("guest-panel-mobile")?.classList.add("hidden");
+    document.getElementById("overlay")?.classList.add("hidden");
+    });
+  }
 });
