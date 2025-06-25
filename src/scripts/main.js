@@ -10,7 +10,7 @@ function renderizarEstancias(israel){
     contenedor.innerHTML="";
     israel.forEach((dani)=> {
         contenedor.innerHTML+=`
-        <div class="max-w-sm rounded-lg  ">
+        <div class="max-w-sm rounded-lg transform transition duration-300 hover:scale-105 ">
             <a href="#">
                 <img class="w-full h-48 object-cover rounded-3xl" src="${dani.photo}" alt="" />
             </a>
@@ -201,8 +201,10 @@ searchButtons.forEach(btn => {
       const resultados = stays.filter(estadia => {
         const ciudad = estadia.city.toLowerCase();
         return ciudad.includes(location) && estadia.maxGuests >= guests;
+
     })
-    
+    const tituloLugar = document.getElementById("titulo-lugar");
+    tituloLugar.textContent = `STAYS IN ${location.toUpperCase()}`;
     /* console.log(resultados); */
     renderizarEstancias(resultados);/* se envia a la funcion de las card previamente echa */
 
